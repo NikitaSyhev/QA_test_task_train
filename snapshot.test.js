@@ -5,6 +5,16 @@ describe('Snapshot test', () => {
   let browser;
   let page;
 
+  async function makeCounterSnapShot(childElem, nameOfTest) {
+    await page.waitForSelector(childElem);
+    const elementOfWebPage = await page.$(childElem);
+    const parentElem = await elementOfWebPage.evaluateHandle(node => node.closest('.desktop-impact-item-eeQO3'));
+    await parentElem.screenshot({ path: `./output/${nameOfTest}.jpg` });
+  }
+
+
+
+
   beforeAll(async () => {
     browser = await chromium.launch({ headless: false });
     page = await browser.newPage();
@@ -15,32 +25,16 @@ describe('Snapshot test', () => {
     await browser.close();
   });
 
-
-  
   test('of CO2 counter', async () => {
-      await page.waitForSelector('.desktop-bird-xXtiX');
-      const elementOfWebPage = await page.$('.desktop-bird-xXtiX');
-      const parentElem = await elementOfWebPage.evaluateHandle(el =>   el.closest('.desktop-impact-item-eeQO3'));
-      await parentElem.screenshot({ path: './output/testCase1.jpg' });
+     await makeCounterSnapShot('.desktop-bird-xXtiX','testCase1');
   }, 20000); 
-
-
 
   test('of water counter', async () => {
-    await page.waitForSelector('.desktop-water1-LWlZZ');
-    const elementOfWebPage = await page.$('.desktop-water1-LWlZZ');
-    const parentElem = await elementOfWebPage.evaluateHandle(el =>   el.closest('.desktop-impact-item-eeQO3'));
-    await parentElem.screenshot({ path: './output/testCase2.jpg' });
+     await makeCounterSnapShot('.desktop-water1-LWlZZ', 'testCase2');
   }, 20000); 
-
-
 
   test('of power counter', async () => {
-  await page.waitForSelector('.desktop-bird-xXtiX');
-  const elementOfWebPage = await page.$('.desktop-sun-JCEQH');
-  const parentElem = await elementOfWebPage.evaluateHandle(el =>   el.closest('.desktop-impact-item-eeQO3'));
-  await parentElem.screenshot({ path: './output/testCase3.jpg' });
+      await makeCounterSnapShot('.desktop-sun-JCEQH', 'testCase3');  
   }, 20000); 
-
-
+  
 });
